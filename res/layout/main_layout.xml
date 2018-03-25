@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <LinearLayout android:orientation="vertical" android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+       <Button
+           android:id="@+id/record_button"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="RECORD"
+           android:onClick="recordButtonClicked"/>
+
+    <Button
+        android:id="@+id/my_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/button_text"
+        android:onClick="myButtonClicked"/>
+
+
+    <RelativeLayout android:id="@+id/of_gl_surface_container" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+       </RelativeLayout>
+    	<!-- add here other views' layouts -->
+
+    </LinearLayout>
