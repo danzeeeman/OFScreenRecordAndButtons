@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import cc.openframeworks.OFActivity;
 import cc.openframeworks.OFAndroid;
+import cc.openframeworks.OFAndroidLifeCycle;
 
 /**
  * Created by dan on 3/25/2018.
@@ -16,11 +17,17 @@ import cc.openframeworks.OFAndroid;
 public class ButtonActivity extends cc.openframeworks.OFActivity{
 
     public Button myButton;
+    public Button recButton;
+
+    public boolean bRecording = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        recButton = findViewById(R.id.record_button);
+        recButton.setBackground(getDrawable(R.drawable.record));
+        OFAndroidLifeCycle.getGLView();
 
     }
 
@@ -34,7 +41,17 @@ public class ButtonActivity extends cc.openframeworks.OFActivity{
 
 
     public void recordButtonClicked(View v){
-        OFAndroid.onMenuItemSelected("record_button");
+//        OFAndroid.onMenuItemSelected("record_button");
+        if(!bRecording) {
+            recButton.setBackground(getDrawable(R.drawable.stop));
+            bRecording = true;
+            OFAndroidLifeCycle.getGLView().prepareRec(getTexID());
+            OFAndroidLifeCycle.getGLView().startVideo();
+        }else{
+            recButton.setBackground(getDrawable(R.drawable.record));
+            bRecording = false;
+            OFAndroidLifeCycle.getGLView().stopVideo();
+        }
     }
     // Menus
     // http://developer.android.com/guide/topics/ui/menus.html
@@ -56,6 +73,7 @@ public class ButtonActivity extends cc.openframeworks.OFActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    public native int getTexID();
 
     @Override
     public boolean onPrepareOptionsMenu (Menu menu){
@@ -63,4 +81,6 @@ public class ButtonActivity extends cc.openframeworks.OFActivity{
         //  you can add or remove menu options from here
         return  super.onPrepareOptionsMenu(menu);
     }
+
+
 }

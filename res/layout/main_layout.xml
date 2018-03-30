@@ -7,7 +7,7 @@
            android:layout_width="100dp"
            android:layout_height="100dp"
            android:onClick="recordButtonClicked"
-           android:background="@drawable/button_record"/>
+           android:background="@drawable/record"/>
 
      <Button
         android:id="@+id/my_button"

@@ -24,6 +24,7 @@ class PermissionHelper {
         return ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
+
     public static void requestCameraPermission(Activity activity, boolean requestWritePermission) {
 
         boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity,

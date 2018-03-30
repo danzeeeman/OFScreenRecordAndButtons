@@ -1,14 +1,35 @@
 #include "ofApp.h"
 #include "ofxAndroidUtils.h"
 //--------------------------------------------------------------
+
+int texID;
+
 void ofApp::setup(){
     backGroundColor = ofColor(0, 0, 0);
     ofAddListener(ofxAndroidEvents().menuItemSelected,this,&ofApp::menuItemSelected,OF_EVENT_ORDER_APP);
+    ofxAndroidRequestPermission(OFX_ANDROID_PERMISSION_WRITE_EXTERNAL_STORAGE);
+    fbo.allocate(1080, 1920, GL_RGB);
+    texID = fbo.getTexture().getTextureData().textureID;
 }
-
+extern "C" {
+    JNIEXPORT jint
+    Java_cc_openframeworks_androidScreenRecording_ButtonActivity_getTexID(JNIEnv *env, jobject obj) {
+        ofLog() << "SENDING TEXID TO JAVA: " << texID;
+        return texID;
+    }
+}
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    fbo.begin();
+    ofClear(0, 0, 0);
+    ofBackground(backGroundColor);
+    ofPushMatrix();
+    ofTranslate(fbo.getWidth()/2, fbo.getHeight()/2);
+    ofRotateXDeg(ofGetFrameNum());
+    ofSetColor(255, 255, 255);
+    ofDrawRectangle(0, 0, 100, 100);
+    ofPopMatrix();
+    fbo.end();
 }
 
 
@@ -22,14 +43,7 @@ void ofApp::menuItemSelected(string & buttonName){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofBackground(backGroundColor);
-	ofPushMatrix();
-	ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-    ofRotateXDeg(ofGetFrameNum());
-    ofSetColor(255, 255, 255);
-    ofDrawRectangle(0, 0, 100, 100);
-	ofPopMatrix();
-
+    fbo.draw(0, 0);
 }
 
 //--------------------------------------------------------------
@@ -94,7 +108,8 @@ void ofApp::resume(){
 
 //--------------------------------------------------------------
 void ofApp::reloadTextures(){
-
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
+    texID = fbo.getTexture().getTextureData().textureID;
 }
 
 //--------------------------------------------------------------
